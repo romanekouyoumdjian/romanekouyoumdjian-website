@@ -25,17 +25,22 @@
     </div>
   </header>
 
-  <main class="page page--text">
+  <main class="page page--random">
     <header class="page-head">
       <h1 class="page-title">What I like</h1>
     </header>
 
-    <div class="bio-list">
-      <section class="bio-language" aria-labelledby="like-soon">
-        <h2 id="like-soon">Soon</h2>
-        <p>A selection of references, images, sounds, texts and fragments will be gathered here.</p>
-      </section>
-    </div>
+    <section class="random-art" aria-label="Random artwork">
+      <p class="random-art__intro">Découvre mon univers, une oeuvre à la fois</p>
+
+      <button class="random-art__button" type="button" id="randomArtworkButton">
+        AU HASARD
+      </button>
+
+      <figure class="random-art__figure">
+        <img class="random-art__image" id="randomArtworkImage" src="" alt="" />
+      </figure>
+    </section>
   </main>
 
   <footer class="site-footer">
@@ -43,5 +48,7 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/gallery-data.js"></script>
+  <script src="assets/js/random-art.js"></script>
 </body>
 </html>

@@ -30,7 +30,7 @@
       <h1 class="page-title">Objects</h1>
     </header>
 
-    <section class="carousel" aria-label="Objects carousel">
+    <section class="carousel" aria-label="Objects carousel" data-gallery-label="Object">
       <div class="carousel__track" id="paintingsTrack"></div>
       <nav class="year-strip" id="yearStrip" aria-label="Jump to year"></nav>
     </section>
@@ -42,102 +42,7 @@
 
   <script src="assets/js/main.js"></script>
   <script src="assets/js/gallery-data.js"></script>
+  <script src="assets/js/gallery.js"></script>
 
-  <script>
-    (async () => {
-      const track = document.getElementById("paintingsTrack");
-      const yearStrip = document.getElementById("yearStrip");
-      if (!track || !yearStrip) return;
-
-      let data;
-      try {
-        const res = await fetch("assets/data/paintings.json", { cache: "no-store" });
-        if (!res.ok) throw new Error("Could not load paintings.json");
-        data = await res.json();
-      } catch (err) {
-        if (Array.isArray(window.paintingsData)) {
-          data = window.paintingsData;
-        } else {
-          track.innerHTML = "<p style='padding:12px'>Could not load the gallery data. Run the build script and make sure you open the site via a local server.</p>";
-          return;
-        }
-      }
-
-      data.sort((a, b) => {
-        const ya = Number(a.year);
-        const yb = Number(b.year);
-        if (ya !== yb) return yb - ya;
-        return String(a.filename).localeCompare(String(b.filename));
-      });
-
-      const yearsInOrder = [];
-      for (let i = 0; i < data.length; i++) {
-        const item = data[i];
-
-        if (!yearsInOrder.includes(item.year)) yearsInOrder.push(item.year);
-
-        const fig = document.createElement("figure");
-        fig.className = "slide";
-        fig.dataset.year = item.year;
-
-        fig.innerHTML = `
-          <a href="${item.src}">
-            <img src="${item.src}" alt="Object, ${item.year}" loading="lazy" />
-          </a>
-          <figcaption>
-            <span class="meta__year">${item.year}</span>
-          </figcaption>
-        `;
-        track.appendChild(fig);
-      }
-
-      yearsInOrder.forEach((y) => {
-        const btn = document.createElement("button");
-        btn.className = "year-chip";
-        btn.type = "button";
-        btn.dataset.jumpYear = y;
-        btn.textContent = y;
-        yearStrip.appendChild(btn);
-      });
-
-      const chips = Array.from(yearStrip.querySelectorAll("[data-jump-year]"));
-      const slides = Array.from(track.querySelectorAll(".slide[data-year]"));
-
-      const setActiveYear = (year) => {
-        chips.forEach((c) => c.classList.toggle("is-active", c.dataset.jumpYear === year));
-      };
-
-      const scrollToYear = (year) => {
-        const target = slides.find((s) => s.dataset.year === year);
-        if (!target) return;
-        track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: "smooth" });
-        setActiveYear(year);
-      };
-
-      chips.forEach((chip) => {
-        chip.addEventListener("click", () => scrollToYear(chip.dataset.jumpYear));
-      });
-
-      const onScroll = () => {
-        const trackLeft = track.scrollLeft;
-        let best = slides[0];
-        let bestDist = Infinity;
-
-        for (const s of slides) {
-          const dist = Math.abs((s.offsetLeft - track.offsetLeft) - trackLeft);
-          if (dist < bestDist) {
-            bestDist = dist;
-            best = s;
-          }
-        }
-        if (best && best.dataset.year) setActiveYear(best.dataset.year);
-      };
-
-      track.addEventListener("scroll", () => window.requestAnimationFrame(onScroll), { passive: true });
-
-      if (yearsInOrder.length) setActiveYear(yearsInOrder[0]);
-      onScroll();
-    })();
-  </script>
 </body>
 </html>
