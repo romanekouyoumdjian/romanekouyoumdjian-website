@@ -21,7 +21,6 @@
           <a href="installation.html">Installation</a>
           <a href="what-i-like.html">What I like</a>
           <a href="bio.html">Bio</a>
-          <a href="contact.html">Contact</a>
         </nav>
       </div>
     </header>
@@ -42,6 +41,7 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/gallery-data.js"></script>
 
   <script>
     (async () => {
@@ -55,8 +55,12 @@
         if (!res.ok) throw new Error("Could not load paintings.json");
         data = await res.json();
       } catch (err) {
-        track.innerHTML = "<p style='padding:12px'>Could not load the gallery data. Run the build script and make sure you open the site via a local server.</p>";
-        return;
+        if (Array.isArray(window.paintingsData)) {
+          data = window.paintingsData;
+        } else {
+          track.innerHTML = "<p style='padding:12px'>Could not load the gallery data. Run the build script and make sure you open the site via a local server.</p>";
+          return;
+        }
       }
 
       // Sort by year desc, then filename asc

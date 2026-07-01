@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Drawings. Romane Kouyoumdjian</title>
+  <title>Objects. Romane Kouyoumdjian</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -15,8 +15,8 @@
 
         <nav class="site-nav site-nav--center" aria-label="Primary navigation">
           <a href="paintings.html">Paintings</a>
-          <a aria-current="page" href="drawings.html">Drawings</a>
-          <a href="objects.html">Objects</a>
+          <a href="drawings.html">Drawings</a>
+          <a aria-current="page" href="objects.html">Objects</a>
           <a href="graphic-design.html">Graphic design</a>
           <a href="installation.html">Installation</a>
           <a href="what-i-like.html">What I like</a>
@@ -27,17 +27,17 @@
 
   <main class="page page--carousel">
     <header class="page-head">
-      <h1 class="page-title">Drawings</h1>
+      <h1 class="page-title">Objects</h1>
     </header>
 
-    <section class="carousel" aria-label="Drawings carousel">
+    <section class="carousel" aria-label="Objects carousel">
       <div class="carousel__track" id="paintingsTrack"></div>
       <nav class="year-strip" id="yearStrip" aria-label="Jump to year"></nav>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© <span id="year"></span> Romane Kouyoumdjian</p>
+    <p>&copy; <span id="year"></span> Romane Kouyoumdjian</p>
   </footer>
 
   <script src="assets/js/main.js"></script>
@@ -63,7 +63,6 @@
         }
       }
 
-      // Sort by year desc, then filename asc
       data.sort((a, b) => {
         const ya = Number(a.year);
         const yb = Number(b.year);
@@ -71,7 +70,6 @@
         return String(a.filename).localeCompare(String(b.filename));
       });
 
-      // Build slides
       const yearsInOrder = [];
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
@@ -84,7 +82,7 @@
 
         fig.innerHTML = `
           <a href="${item.src}">
-            <img src="${item.src}" alt="Drawing, ${item.year}" loading="lazy" />
+            <img src="${item.src}" alt="Object, ${item.year}" loading="lazy" />
           </a>
           <figcaption>
             <span class="meta__year">${item.year}</span>
@@ -93,7 +91,6 @@
         track.appendChild(fig);
       }
 
-      // Build year buttons
       yearsInOrder.forEach((y) => {
         const btn = document.createElement("button");
         btn.className = "year-chip";
